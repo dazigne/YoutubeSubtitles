@@ -1,0 +1,90 @@
+<html>
+<body>
+ 
+<table>
+    <tr><td>Text to Save:</td></tr>
+    <tr>
+        <td colspan="3">
+            <textarea id="inputTextToSave" cols="80" rows="25"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>Filename to Save As:</td>
+        <td><input id="inputFileNameToSaveAs"></input></td>
+        <td><button onclick="saveTextAsFile()">Save Text to File</button></td>
+    </tr>
+    <tr>
+        <td>Select a File to Load:</td>
+        <td><input type="file" id="fileToLoad"></td>
+        <td><button onclick="loadFileAsText()">Load Selected File</button><td>
+		 <td><button onclick="modifyFileAsText()">Modify Selected File</button><td>
+
+    </tr>
+</table>
+ 
+<script type="text/javascript">
+ var montext;
+function saveTextAsFile()
+{
+    var textToSave = document.getElementById("inputTextToSave").value;
+    var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
+ 
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+ 
+    downloadLink.click();
+}
+ 
+function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
+}
+ 
+function loadFileAsText()
+{
+    var fileToLoad = document.getElementById("fileToLoad").files[0];
+ 
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent) 
+    {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        document.getElementById("inputTextToSave").value = textFromFileLoaded;
+		montext=textFromFileLoaded;
+    };
+    fileReader.readAsText(fileToLoad, "ISO-8859-4");
+}
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+	var yes=target.split(search);
+	var i=1;
+	while(i<yes.length-1){ 
+	yes[i]=yes[i].substring(15);
+	yes[i]=yes[i].substring(0, yes[i].length - 19);
+	//var v=a.slice(15);
+    //yes[i]=yes[i].replace(v,"");
+	i++;}
+	var f=yes.length-1;
+	yes[f]=yes[f].substring(15);
+	yes[0]="";
+    return yes.join(replacement);
+};
+
+function modifyFileAsText()
+{
+var a=montext.replaceAll("--"," ");
+//alert(a);
+document.getElementById("inputTextToSave").value = a;
+}
+ 
+</script>
+ 
+</body>
+</html>
