@@ -67,7 +67,7 @@ String.prototype.replaceAll = function(search, replacement) {
 	var i=1;
 	while(i<yes.length-1){ 
 	yes[i]=yes[i].substring(15);
-	yes[i]=yes[i].substring(0, yes[i].length - 19);
+	yes[i]=yes[i].substring(0, yes[i].length - 20);
 	//var v=a.slice(15);
     //yes[i]=yes[i].replace(v,"");
 	i++;}
@@ -80,7 +80,8 @@ String.prototype.replaceAll = function(search, replacement) {
 function modifyFileAsText()
 {
 var a=montext.replaceAll("--"," ");
-//alert(a);
+alert(a);
+var a=a.replace(/\n/g, " ");
 document.getElementById("inputTextToSave").value = a;
 }
  
